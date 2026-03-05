@@ -43,15 +43,15 @@ class SolarWH(Dataset):
         df = pd.read_csv(datapth)
         df_clean = df[self.metadata.features + [self.metadata.label]].dropna()
 
-        train_df, test_df = train_test_split(df_clean, test_size=test_size, random_shuffle=42)
+        train_df, test_df = train_test_split(df_clean, test_size=test_size, random_state=42)
 
-        subset = train_df if train else test_df # Choose one train or test
+        subset = pd.DataFrame(train_df) if train else pd.DataFrame(test_df) # Choose one train or test
 
         features_X = subset[self.metadata.features].values
-        label_Y = subset[self.metadata.label].values.reshape(-1, 1)
+        label_Y = subset[self.metadata.label].values
 
         self.features = torch.tensor(features_X, dtype=torch.float32)
-        self.label = torch.tensor(label_Y, dtype=torch.float32)
+        self.label = torch.tensor(label_Y, dtype=torch.float32).reshape(-1, 1)
 
         if transform is not None:
             # Keeping the variable name same for consistency
@@ -66,7 +66,7 @@ class SolarWH(Dataset):
 
 def transform_scale(X):
     scaler = MinMaxScaler()
-    return scaler.fit_transform(X)
+    return scaler.fit_transform(X).astype('float32')
 
 def get_dataloaders(datapth, batch_size=32):
     train_dataset = SolarWH(datapth, transform=transform_scale, train=True)

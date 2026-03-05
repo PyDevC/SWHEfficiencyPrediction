@@ -8,7 +8,7 @@ from sklearn.metrics import r2_score, mean_absolute_error, explained_variance_sc
 import os
 
 DATA_PATH = os.path.abspath(os.path.realpath(
-        os.path.join(os.path.dirname(__file__), "data")
+        os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
 ))
 
 def calculate_metrics(y_true, y_pred):
@@ -20,11 +20,11 @@ def calculate_metrics(y_true, y_pred):
     mape = np.mean(np.abs((y_true - y_pred) / (y_true + 1e-9))) * 100
     
     return {
-        "R2": r2,
-        "explained variance score": evs,
+        "r2": r2,
+        "evs": evs,
         "corr": corr,
-        "MAE": mae,
-        "MAPE": mape
+        "mae": mae,
+        "mape": mape
     }
 
 def plot_performance(y_true, y_pred, metrics):
