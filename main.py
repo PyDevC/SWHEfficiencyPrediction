@@ -24,7 +24,7 @@ def transform_data(X_np, scaler):
     return torch.tensor(transformed).squeeze(0)
 
 
-train_loader, test_loader = get_dataloaders(df, batch_size=16, transform_scale=transform_data)
+train_loader, test_loader = get_dataloaders(df, batch_size=32, transform_scale=transform_data)
 model, model_path, loss_history = train_model(train_loader, epochs=5, device=device)
 metrics, targets, preds = evaluate_model(model, test_loader, device=device)
 plot_regression_results(targets, preds)

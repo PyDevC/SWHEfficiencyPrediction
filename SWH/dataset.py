@@ -101,8 +101,10 @@ class SolarFWH(Dataset):
         self.X = torch.tensor(df[self.metadata.features].values, dtype=torch.float32)
         self.y = torch.tensor(df[self.metadata.label_name].values.reshape(-1, 1), dtype=torch.float32)
 
-        self.transform = transform
         self.scalar = scalar
+
+        if transform is not None:
+            self.X = transform(self.X, self.scalar)
 
     def __len__(self):
         return len(self.X)
@@ -110,9 +112,6 @@ class SolarFWH(Dataset):
     def __getitem__(self, idx):
         features, label = self.X[idx], self.y[idx]
         
-        if self.transform:
-            features = self.transform(features, self.scalar)
-            
         return features, label
 
 def fit_scaler(train_df, features):

@@ -35,9 +35,8 @@ def train_model(train_loader, epochs=100, lr=0.001, device='cpu'):
         epoch_loss = running_loss / len(train_loader)
         loss_history.append(epoch_loss)
             
-        if (epoch + 1) % 10 == 0:
-            avg_loss = epoch_loss / len(train_loader)
-            print(f"Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.6f}")
+        avg_loss = epoch_loss / len(train_loader)
+        print(f"Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.6f}")
             
     save_path = "experiments/models/solar_model.pth"
     save_model(model, save_path, save_model_dict=True)
